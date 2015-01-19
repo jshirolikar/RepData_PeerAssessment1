@@ -1,0 +1,132 @@
+---
+title: "PA1_template.rmd"
+author: "JS"
+date: "Sunday, January 18, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r, echo=FALSE}
+
+require("xlsx")
+library("xlsx")
+library("plyr")
+library("stringr")
+library("dplyr")
+
+activitydocorig <- read.csv2("C:\\coursera\\coursera\\Reproducible Research\\activity.csv", na.string = "", sep = ",")
+activitydoc <- activitydocorig[complete.cases(activitydocorig),]
+
+
+activitydoc <- activitydoc[289:17568,]
+
+activitydoc$steps <- as.numeric(activitydoc$steps)
+activitydoc$date <- as.Date(activitydoc$date)
+
+
+sum_activitydoc <- aggregate(activitydoc$steps, list(activitydoc$date), sum)
+
+
+hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of steps")
+
+```
+
+Mean
+
+```{r, echo=FALSE}
+
+print(mean(sum_activitydoc$x))
+
+
+```
+Median
+
+```{r, echo=FALSE}
+
+print(median(sum_activitydoc$x))
+
+
+average_dailyactivitydoc <- aggregate(activitydoc$steps, list(activitydoc$interval), mean)
+plot(x=average_dailyactivitydoc$x,y= average_dailyactivitydoc$Group1,   type = "l", xlab = "Interval", ylab = "Steps", xaxt = "n", yaxt = "n", main = "Average daily activity")
+axis(1, at=c(average_dailyactivitydoc$Group1))
+axis(2, at = c(average_dailyactivitydoc$x))
+
+```
+
+Interval with max steps
+
+```{r, echo=FALSE}
+average_dailyactivitydoc$Group.1[which(average_dailyactivitydoc$x == max(average_dailyactivitydoc$x))]
+
+
+newactivitydoc <- activitydocorig[1:288,]
+newactivitydoc$steps <- as.numeric(newactivitydoc$steps)
+newactivitydoc$date <- as.Date(newactivitydoc$date)
+newactivitydoc$steps[1:288] <- average_dailyactivitydoc$x[1:288]
+
+newactivitydoc <- rbind(newactivitydoc, activitydoc)
+
+sum_activitydoc <- aggregate(newactivitydoc$steps, list(newactivitydoc$date), sum)
+hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of steps with missing data filled in")
+
+```
+```{r, echo=FALSE}
+par(mfrow =c(2,1))
+```
+Mean
+
+```{r, echo=FALSE}
+
+print(mean(sum_activitydoc$x))
+```
+
+Median
+
+```{r, echo=FALSE}
+print(median(sum_activitydoc$x))
+```
+
+```{r, echo=FALSE}
+newactivitydoc$weekday <- weekdays(newactivitydoc$date)
+newactivitydoc <- subset(newactivitydoc, newactivitydoc$weekday == "Sunday" | newactivitydoc$weekday== "Saturday")
+
+average_weekendactivitydoc <- aggregate(newactivitydoc$steps, list(newactivitydoc$interval), mean)
+
+plot(x=average_weekendactivitydoc$x,y= average_weekendactivitydoc$Group1,   type = "l", xlab = "Interval", ylab = "Steps", xaxt = "n", yaxt = "n", main = "Weekend Activity")
+axis(1, at=c(average_weekendactivitydoc$Group1))
+axis(2, at = c(average_weekendactivitydoc$x))
+```
+
+```{r, echo=FALSE}
+
+#weekdays
+newactivitydoc <- activitydocorig[1:288,]
+newactivitydoc$steps <- as.numeric(newactivitydoc$steps)
+newactivitydoc$date <- as.Date(newactivitydoc$date)
+newactivitydoc$steps[1:288] <- average_dailyactivitydoc$x[1:288]
+
+newactivitydoc <- rbind(newactivitydoc, activitydoc)
+
+sum_activitydoc <- aggregate(newactivitydoc$steps, list(newactivitydoc$date), sum)
+#hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of total steps on weekdays")
+```
+
+
+
+```{r, echo=FALSE}
+newactivitydoc$weekday <- weekdays(newactivitydoc$date)
+newactivitydoc <- subset(newactivitydoc, newactivitydoc$weekday != "Sunday" & newactivitydoc$weekday != "Saturday")
+
+average_weekdayactivitydoc <- aggregate(newactivitydoc$steps, list(newactivitydoc$interval), mean)
+
+plot(x=average_weekdayactivitydoc$x,y= average_weekdayactivitydoc$Group1,   type = "l", xlab = "Interval", ylab = "Steps", xaxt = "n", yaxt = "n", main = "Weekday activity")
+axis(1, at=c(average_weekdayactivitydoc$Group1))
+axis(2, at = c(average_weekdayactivitydoc$x))
+
+```
