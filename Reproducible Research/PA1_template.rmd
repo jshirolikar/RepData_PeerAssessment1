@@ -78,6 +78,7 @@ Interval with max steps
 average_dailyactivitydoc$Group.1[which(average_dailyactivitydoc$x == max(average_dailyactivitydoc$x))]
 ```
 ## Imputing missing values
+Average values calculated above are substitued into missing value vector where needed.
 ```{r, echo=FALSE}
 missingactivitydoc$steps <- as.numeric(missingactivitydoc$steps)
 missingactivitydoc$interval <- as.numeric(missingactivitydoc$interval)
