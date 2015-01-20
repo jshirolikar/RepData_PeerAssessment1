@@ -11,6 +11,7 @@ When you click the **Knit** button a document will be generated that includes bo
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
+## Loading and preprocessing the data
 
 ```{r, echo=FALSE}
 
@@ -29,6 +30,10 @@ missingactivitydoc <- subset(activitydocorig, activitydocorig$steps == "NA")
 activitydoc$steps <- as.numeric(activitydoc$steps)
 activitydoc$date <- as.Date(activitydoc$date)
 
+```
+## What is mean total number of steps taken per day?
+
+```{r, echo=FALSE}
 
 sum_activitydoc <- aggregate(activitydoc$steps, list(activitydoc$date), sum)
 hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of total steps per day")
@@ -52,6 +57,10 @@ Median
 
 print(median(sum_activitydoc$x))
 
+```
+## What is the average daily activity pattern?
+
+```{r, echo=FALSE}
 average_dailyactivitydoc <- aggregate(activitydoc$steps, list(activitydoc$interval), mean)
 plot(y=average_dailyactivitydoc$x, x=average_dailyactivitydoc$Group.1,   type = "l", xlab = "Interval", ylab = "Steps", xaxt = "n", yaxt = "n")
 axis(1, at=c(average_dailyactivitydoc$Group.1))
@@ -67,9 +76,9 @@ Interval with max steps
 ```{r, echo=FALSE}
 
 average_dailyactivitydoc$Group.1[which(average_dailyactivitydoc$x == max(average_dailyactivitydoc$x))]
-
-
-
+```
+## Imputing missing values
+```{r, echo=FALSE}
 missingactivitydoc$steps <- as.numeric(missingactivitydoc$steps)
 missingactivitydoc$interval <- as.numeric(missingactivitydoc$interval)
 
@@ -105,8 +114,10 @@ Median
 ```{r, echo=FALSE}
 
 print(median(sum_activitydoc$x))
+```
+## Are there differences in activity patterns between weekdays and weekends?
 
-
+```{r, echo=FALSE}
 newactivitydoc$weekday <- weekdays(newactivitydoc$date)
 newactivitydoc2 <- newactivitydoc
 newactivitydoc <- subset(newactivitydoc, newactivitydoc$weekday == "Sunday" | newactivitydoc$weekday== "Saturday")
