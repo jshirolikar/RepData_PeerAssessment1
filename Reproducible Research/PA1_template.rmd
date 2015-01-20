@@ -43,7 +43,7 @@ hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of total
 
 ```
 
-Mean
+Mean= 23848.47
 
 
 ```{r, echo=FALSE}
@@ -52,7 +52,7 @@ Mean
 print(mean(sum_activitydoc$x))
 
 ```
-Median
+Median = 25666
 ```{r, echo=FALSE}
 
 print(median(sum_activitydoc$x))
@@ -72,7 +72,7 @@ axis(2, at = c(average_dailyactivitydoc$x))
 ```{r, echo=FALSE}
 
 ```
-Interval with max steps
+Interval with max steps =  1845
 ```{r, echo=FALSE}
 
 average_dailyactivitydoc$Group.1[which(average_dailyactivitydoc$x == max(average_dailyactivitydoc$x))]
@@ -105,13 +105,13 @@ hist(sum_activitydoc$x, xlab = "Total steps per day", main = "Histogram of total
 
 ```
 
-Mean
+Mean =23848.47
 ```{r, echo=FALSE}
 
 print(mean(sum_activitydoc$x))
 
 ```
-Median
+Median=23871
 ```{r, echo=FALSE}
 
 print(median(sum_activitydoc$x))
