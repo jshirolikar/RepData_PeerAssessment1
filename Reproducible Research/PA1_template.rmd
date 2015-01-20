@@ -115,7 +115,8 @@ Median
 
 print(median(sum_activitydoc$x))
 ```
-## Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekends?  
+Yes, on weekends there is consistent activity throughout the day. However on weekdays, there is more activity during certain couple of peak times.
 
 ```{r, echo=FALSE}
 newactivitydoc$weekday <- weekdays(newactivitydoc$date)
